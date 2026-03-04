@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home Page
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+    <h1 class="text-4xl font-bold mb-8 text-gray-800">Welcome to PhotoSphere</h1>
+    <p class="mb-6 text-gray-600">Browse existing shots or upload your own masterpiece.</p>
+    <div class="space-x-4 flex-col flex items-center justify-center gap-4">
+        <div class="space-x-4 flex items-center justify-center gap-4">
+            <a href="{% url 'all_photos' %}" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600 transition">View All Photos</a>
+            <a href="{% url 'add_photo' %}" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow hover:bg-green-600 transition">Add New Photo</a>
+        </div>
+
+        <a href="{% url 'register' %}" class="inline-block bg-purple-500 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-600 transition">Register</a>
+        <a href="{% url 'login' %}" class="inline-block bg-yellow-500 text-white px-6 py-3 rounded-lg shadow hover:bg-yellow-600 transition">Login</a>
+    </div>
+</div>
+{% endblock %}
