@@ -1,17 +1,223 @@
 {% extends "layout.html" %}
 
-
 {% block title %}
-    all Photo Page
+    Add Photo | PhotoSphere
 {% endblock %}
 
-
 {% block content %}
-    <form method="post" enctype="multipart/form-data" action="{% url 'add_photo' %}" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-        {% csrf_token %}
-        {{ photo_form.as_p }}
-        {{ category_form.as_p }}
+<div class="min-h-[calc(100vh-56px)] bg-gradient-to-br from-gray-900 via-indigo-900 to-black py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    
+    <!-- Animated Orbs -->
+    <div class="absolute top-0 left-[-10%] w-[500px] h-[500px] bg-indigo-500/30 rounded-full mix-blend-screen filter blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-500/30 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-2000"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
         
-        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">Add Photo</button>
-    </form>
+        <div class="text-center mb-10">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 mb-4 tracking-tight">
+                Upload Masterpiece
+            </h2>
+            <p class="text-indigo-200/80 text-lg max-w-xl mx-auto">
+                Share your perspective with the world. Upload a new photo, add details, and assign it to a category.
+            </p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" action="{% url 'add_photo' %}" class="custom-form grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 bg-white/10 backdrop-blur-2xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            {% csrf_token %}
+
+            <!-- Left Column: Image Preview -->
+            <div class="flex flex-col">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Photo Preview
+                </h3>
+                
+                <div id="preview-container" class="relative w-full aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 border-2 border-dashed border-indigo-500/50 hover:border-indigo-400 transition flex items-center justify-center group cursor-pointer shadow-inner">
+                    
+                    <!-- Empty State Placeholder -->
+                    <div id="preview-placeholder" class="flex flex-col items-center justify-center text-center p-6 transition group-hover:scale-105">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 group-hover:text-indigo-200 group-hover:bg-indigo-500/30 transition">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                        <p class="text-lg font-semibold text-indigo-100">Click to select photo</p>
+                        <p class="text-sm text-indigo-300/70 mt-2">High-resolution images look best</p>
+                    </div>
+
+                    <!-- Actual Image Preview -->
+                    <img id="image-preview" src="#" alt="Preview" class="absolute inset-0 w-full h-full object-contain hidden z-10 bg-black/80 backdrop-blur-sm">
+                    
+                    <!-- Overlay on hover when image exists -->
+                    <div id="preview-overlay" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity hidden z-20 flex items-center justify-center">
+                        <p class="text-white font-bold bg-black/50 px-4 py-2 rounded-lg backdrop-blur-md">Change Photo</p>
+                    </div>
+                </div>
+                
+                <!-- Hidden file input wrapper -->
+                <div class="form-row-file hidden">
+                    {{ photo_form.image }}
+                </div>
+            </div>
+
+            <!-- Right Column: Details -->
+            <div class="flex flex-col justify-center space-y-6">
+                <h3 class="text-xl font-bold text-white mb-2 border-b border-white/10 pb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Photo Details
+                </h3>
+
+                <div class="space-y-5 flex-1 w-full">
+                    <div class="form-row">
+                        <label>Title</label>
+                        {{ photo_form.title }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>Description</label>
+                        {{ photo_form.description }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>Date & Time</label>
+                        {{ photo_form.date }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>Category</label>
+                        {{ category_form.category_types }}
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-lg py-4 px-6 rounded-xl shadow-[0_0_30px_rgba(99,102,241,0.3)] transform transition hover:-translate-y-1 hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Publish to PhotoSphere
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Styling for the form inputs */
+    .form-row label {
+        display: block;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
+        margin-left: 0.2rem;
+    }
+    
+    .form-row input[type="text"],
+    .form-row input[type="datetime-local"],
+    .form-row input[type="number"],
+    .form-row textarea,
+    .form-row select,
+    .custom-form input,
+    .custom-form select,
+    .custom-form textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 0.75rem;
+        color: white;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-row select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255, 255, 255, 0.6)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2rem;
+        padding-right: 2.5rem;
+    }
+    
+    /* Option styling for the select dropdown */
+    .form-row select option {
+        background-color: #1e1b4b; /* dark indigo */
+        color: white;
+    }
+
+    .form-row textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-row input:focus,
+    .form-row textarea:focus,
+    .form-row select:focus,
+    .custom-form input:focus {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(167, 139, 250, 0.5); /* purple-400 */
+        box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+    }
+
+    /* Style the default Django file input */
+    .form-row-file input[type="file"] {
+        display: none !important;
+    }
+
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+        animation: blob 10s infinite;
+    }
+    .animation-delay-2000 {
+        animation-delay: 3s;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.querySelector('input[type="file"]');
+        const previewContainer = document.getElementById('preview-container');
+        const imagePreview = document.getElementById('image-preview');
+        const placeholder = document.getElementById('preview-placeholder');
+        const overlay = document.getElementById('preview-overlay');
+
+        // Allow clicking the giant box to trigger the hidden file input
+        if(previewContainer && fileInput) {
+            previewContainer.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        // When a file is selected, show it
+        if(fileInput) {
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        overlay.classList.remove('hidden');
+                    }
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = "#";
+                    imagePreview.classList.add('hidden');
+                    placeholder.classList.remove('hidden');
+                    overlay.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Ensure file input element is hidden but keep it clickable
+        if(fileInput) {
+            fileInput.style.display = 'none';
+        }
+    });
+</script>
 {% endblock %}

@@ -1,453 +1,740 @@
 {% extends "layout.html" %}
 
-
 {% block title %}
-    all Photo Page
+all Photo Page
 {% endblock %}
 
+
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
-        <div class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-2xl shadow-xl">
+<div class="container mx-auto px-4 py-8">
+    <div class="w-full max-w-5xl mx-auto">
 
-            <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
-
+        {% if photos %}
+        <div class="relative w-full overflow-hidden rounded-2xl shadow-xl group mb-8">
+            <div id="carousel" class="flex w-full transition-transform duration-500 ease-in-out">
                 {% for photo in photos %}
-                    <div class="w-full shrink-0">
-                        <img src="{{ photo.image.url }}" 
-                            class="w-full h-[500px] object-cover">
-                    </div>
-                    {% endfor %}
-
+                {% if photo.image %}
+                <div class="w-full min-w-full flex-shrink-0">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
+                        class="block w-full h-[500px] object-cover">
                 </div>
-
-                <button onclick="prevSlide()" 
-                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white px-4 py-2 rounded-full">
-                    ❮
-                </button>
-
-                <button onclick="nextSlide()" 
-                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white px-4 py-2 rounded-full">
-                    ❯
-                </button>
-
-            </div>
-
-            <script>
-                let index = 0;
-                const carousel = document.getElementById("carousel");
-                const totalSlides = carousel.children.length;
-
-                function updateSlide() {
-                    carousel.style.transform = `translateX(-${index * 100}%)`;
-                }
-
-                function nextSlide() {
-                    index = (index + 1) % totalSlides;
-                    updateSlide();
-                }
-
-                function prevSlide() {
-                    index = (index - 1 + totalSlides) % totalSlides;
-                    updateSlide();
-                }
-            </script>
-            <h1 class="text-3xl font-bold mb-4">All Photos</h1>
-
-            <!-- container: horizontal scroll -->
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-
-                {% for photo in photos %}
-                    <div onclick="openModal(
-                                '{{ photo.image.url }}',
-                                '{{ photo.title|escapejs }}',
-                                '{{ photo.description|escapejs }}',
-                                '{{ photo.date }}'
-                            )"
-                        class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                            bg-white rounded-lg shadow-md overflow-hidden 
-                            transform transition duration-300 
-                            hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                        {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                    >
-                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h2 class="text-xl font-semibold mb-2">{{ photo.title }}</h2>
-                            <p class="text-gray-600 mb-2">{{ photo.description }}</p>
-                            <p class="text-gray-500 text-sm">{{ photo.date }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-
-            </div>
-
-            <h1 class="text-3xl font-bold mb-4">Wildlife</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Wildlife" %}
-                        <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
-
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
+                {% endif %}
                 {% endfor %}
             </div>
-            <h1 class="text-3xl font-bold mb-4">Nature</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Nature" %}
-                        <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
 
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <h1 class="text-3xl font-bold mb-4">Portrait</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Portrait" %}
-                        <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
-
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <h1 class="text-3xl font-bold mb-4">Architecture</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Architecture" %}
-                       <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <h1 class="text-3xl font-bold mb-4">Street</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Street" %}
-                       <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <h1 class="text-3xl font-bold mb-4">Abstract</h1>
-            <div class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
-                {% for category in photo_categories %}
-                    {% if category.category_types == "Abstract" %}
-                        <div onclick="openModal(
-                                    '{{ category.title.image.url }}',
-                                    '{{ category.title.title |escapejs }}',
-                                    '{{ category.title.description |escapejs }}',
-                                    '{{ category.title.date }}'
-                                )"
-                            class="min-w-[320px] w-[320px] shrink-0 snap-center 
-                                bg-white rounded-lg shadow-md overflow-hidden 
-                                transform transition duration-300 
-                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
-                            {% comment %} onclick="openModal('{{ category.title.image.url }}', '{{ category.title.title }}', '{{ category.title.description }}', '{{ category.title.date }}')" {% endcomment %}
-                        >
-                            <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
-
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold mb-2">
-                                    {{ category.title.title }}
-                                </h2>
-
-                                <p class="text-gray-600 mb-2">
-                                    {{ category.title.description }}
-                                </p>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ category.title.date }}
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-     <style>
-            .scrollbar-hide::-webkit-scrollbar { display: none; }
-            .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-    <script>
-        const scrollers = document.querySelectorAll('.horizontal-scroll');
-
-        scrollers.forEach(scroller => {
-            scroller.addEventListener('wheel', (e) => {
-                if (scroller.scrollWidth > scroller.clientWidth) {
-                    e.preventDefault();
-                    scroller.scrollBy({ left: e.deltaY, behavior: 'smooth' });
-                }
-            }, { passive: false });
-        });
-    </script>
-
-    <div id="photoModal"
-        class="fixed inset-0  flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
-
-        <div class="relative w-[85%] max-w-4xl h-[80vh] bg-white rounded-2xl overflow-hidden shadow-2xl">
-
-            <!-- SLIDER -->
-            <div id="modalSlider"
-                class="flex h-full transition-transform duration-500"
-                style="width: 200%;">
-
-                <!-- IMAGE PAGE -->
-                <div class="w-full h-full bg-black flex items-center justify-center">
-                    <img id="modalImage"
-                        class="max-h-full max-w-full object-contain">
-                </div>
-
-                <!-- DETAILS PAGE -->
-                <div class="w-full h-full p-0 flex flex-col justify-between bg-white">
-
-                    <div>
-                        <h2 id="modalTitle" class="text-3xl font-bold mb-4"></h2>
-                        <p id="modalDescription" class="text-gray-600 mb-4"></p>
-                        <p id="modalDate" class="text-sm text-gray-500"></p>
-                    </div>
-
-                    <a id="downloadBtn"
-                    class="px-6 py-3 bg-blue-600 text-white rounded-lg text-center">
-                    Download
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- CLOSE -->
-            <button onclick="closeModal()"
-                    class="absolute top-4 right-4 text-white text-3xl z-10">
-                ✕
-            </button>
-
-            <!-- RIGHT ARROW -->
-            <button onclick="showDetails()"
-                    class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl z-10">
-                ❯
-            </button>
-
-            <!-- LEFT ARROW -->
-            <button onclick="showImage()"
-                    class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl z-10">
+            <button onclick="prevSlide()"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all text-xl">
                 ❮
             </button>
 
+            <button onclick="nextSlide()"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all text-xl">
+                ❯
+            </button>
+        </div>
+        {% endif %}
+
+        <h1 class="text-3xl font-bold mb-4">All Photos</h1>
+
+        <!-- container: horizontal scroll -->
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+
+                {% for photo in photos %}
+                {% if photo.image %}
+                <div onclick="openModal(
+                                    '{{ photo.image.url }}',
+                                    '{{ photo.title|escapejs }}',
+                                    '{{ photo.description|escapejs }}',
+                                    '{{ photo.date }}', '{{ photo.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">{{ photo.title }}</h2>
+                        <p class="text-gray-600 mb-2">{{ photo.description }}</p>
+                        <p class="text-gray-500 text-sm">{{ photo.date }}</p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ photo.id }}">
+                                        {{ photo.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=photo.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Wildlife</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Wildlife" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Nature</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Nature" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Portrait</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Portrait" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Architecture</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Architecture" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Street</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Street" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">Abstract</h1>
+        <div class="relative group">
+            <button onclick="scrollRowLeft(this)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
+            <button onclick="scrollRowRight(this)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❯</button>
+            <div
+                class="horizontal-scroll flex gap-4 overflow-x-auto scroll-smooth pb-4 px-2 scrollbar-hide snap-x snap-mandatory">
+                {% for category in photo_categories %}
+                {% if category.category_types == "Abstract" and category.title.image %}
+                <div onclick="openModal(
+                                    '{{ category.title.image.url }}',
+                                    '{{ category.title.title|escapejs }}',
+                                    '{{ category.title.description|escapejs }}',
+                                    '{{ category.title.date }}', '{{ category.title.id }}')" class="min-w-[320px] w-[320px] shrink-0 snap-center 
+                                bg-white rounded-lg shadow-md overflow-hidden 
+                                transform transition duration-300 
+                                hover:-translate-y-2 hover:shadow-2xl cursor-pointer">
+
+                    <img src="{{ category.title.image.url }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ category.title.title }}
+                        </h2>
+
+                        <p class="text-gray-600 mb-2">
+                            {{ category.title.description }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm">
+                            {{ category.title.date }}
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="flex items-center gap-1 font-semibold text-gray-700">
+                                    ❤️ <span id="card-like-count-{{ category.title.id }}">
+                                        {{ category.title.like_set.count }}
+                                    </span>
+                                </span>
+                            </div>
+                            {% with latest_comment=category.title.comment_set.last %}
+                            {% if latest_comment %}
+                            <p class="text-xs text-gray-600 truncate"><span class="font-bold text-gray-800">
+                                    {{ latest_comment.user.username }}:
+                                </span>
+                                {{ latest_comment.comment }}
+                            </p>
+                            {% else %}
+                            <p class="text-xs text-gray-400 italic">No comments yet</p>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-    
-    {% comment %} <script>
-        function openModal(image, title, description, date) {
-            document.getElementById('downloadBtn').href = image;
-            document.getElementById('downloadBtn').setAttribute('download', '');
+</div>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* ================= CAROUSEL FIX ================= */
+        let index = 0;
+        const carousel = document.getElementById("carousel");
+        const totalSlides = carousel ? carousel.children.length : 0;
+
+        function updateSlide() {
+            if (!carousel) return;
+            carousel.style.transform = `translateX(-${index * 100}%)`;
         }
-    </script> {% endcomment %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            function openModal(image, title, description, date) {
+        function nextSlide() {
+            if (totalSlides === 0) return;
+            index = (index + 1) % totalSlides;
+            updateSlide();
+        }
 
-                document.getElementById("modalImage").src = image;
-                document.getElementById("modalTitle").textContent = title;
-                document.getElementById("modalDescription").textContent = description;
-                document.getElementById("modalDate").textContent = date;
+        function prevSlide() {
+            if (totalSlides === 0) return;
+            index = (index - 1 + totalSlides) % totalSlides;
+            updateSlide();
+        }
 
-                const downloadBtn = document.getElementById("downloadBtn");
-                downloadBtn.href = image;
-                downloadBtn.setAttribute("download", "");
+        // 🔥 IMPORTANT: make buttons work
+        window.nextSlide = nextSlide;
+        window.prevSlide = prevSlide;
 
-                document.getElementById("photoModal").classList.remove("hidden");
+        // optional auto slide
+        setInterval(() => {
+            if (totalSlides > 0) nextSlide();
+        }, 3000);
 
-                // Always start from image page
-                document.getElementById("modalSlider").style.transform = "translateX(0)";
-            }
 
-            function closeModal() {
-                document.getElementById("photoModal").classList.add("hidden");
-            }
-
-            function showDetails() {
-                document.getElementById("modalSlider").style.transform = "translateX(-50%)";
-            }
-
-            function showImage() {
-                document.getElementById("modalSlider").style.transform = "translateX(0)";
-            }
-
-            // Expose functions globally (needed for onclick)
-            window.openModal = openModal;
-            window.closeModal = closeModal;
-            window.showDetails = showDetails;
-            window.showImage = showImage;
-
-            /* SWIPE SUPPORT */
-            let startX = 0;
-
-            const modal = document.getElementById("photoModal");
-            const slider = document.getElementById("modalSlider");
-
-            modal.addEventListener("touchstart", function (e) {
-                startX = e.touches[0].clientX;
-            });
-
-            modal.addEventListener("touchend", function (e) {
-                let endX = e.changedTouches[0].clientX;
-                let diff = startX - endX;
-
-                if (diff > 60) {
-                    slider.style.transform = "translateX(-100%)";
+        /* ================= SCROLL FIX ================= */
+        document.querySelectorAll('.horizontal-scroll').forEach(scroller => {
+            scroller.addEventListener('wheel', (e) => {
+                if (scroller.scrollWidth > scroller.clientWidth) {
+                    e.preventDefault();
+                    scroller.scrollLeft += e.deltaY;
                 }
-
-                if (diff < -60) {
-                    slider.style.transform = "translateX(0)";
-                }
-            });
-
+            }, { passive: false });
         });
-    </script>
 
-    <a href="{% url 'add_photo' %}" 
-        class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 
+
+        /* ================= MODAL (keep yours) ================= */
+        function openModal(image, title, description, date, photoId) {
+            document.getElementById("modalImage").src = image;
+            document.getElementById("modalTitle").textContent = title;
+            document.getElementById("modalDescription").textContent = description;
+            document.getElementById("modalDate").textContent = date;
+
+            // Likes & Comments
+            if (photoId) {
+                document.getElementById("modalLikeCount").textContent = document.getElementById("likes-for-" + photoId).textContent;
+                document.getElementById("modalLikeBtn").setAttribute("onclick", `toggleLike('${photoId}')`);
+                document.getElementById("modalComments").innerHTML = document.getElementById("comments-for-" + photoId).innerHTML;
+                document.getElementById("modalCommentForm").dataset.photoId = photoId;
+            }
+
+            document.getElementById("downloadBtn").href = image;
+
+            document.getElementById("photoModal").classList.remove("hidden");
+            document.getElementById("modalSlider").style.transform = "translateX(0)";
+        }
+
+        function closeModal() {
+            document.getElementById("photoModal").classList.add("hidden");
+        }
+
+        function showDetails() {
+            document.getElementById("modalSlider").style.transform = "translateX(-50%)";
+        }
+
+        function showImage() {
+            document.getElementById("modalSlider").style.transform = "translateX(0)";
+        }
+
+        window.openModal = openModal;
+
+        function toggleLike(photoId) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const url = "{% url 'toggle_like' 9999 %}".replace('9999', photoId);
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok && response.redirected) {
+                        throw new Error("redirected");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.likes !== undefined) {
+                        document.getElementById(`modalLikeCount`).innerText = data.likes;
+                        document.getElementById(`likes-for-${photoId}`).innerText = data.likes;
+                        document.querySelectorAll(`[id="card-like-count-${photoId}"]`).forEach(el => {
+                            el.innerText = data.likes;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Please log in to like this photo, or check your connection.");
+                });
+        }
+
+        window.scrollRowLeft = function (btn) {
+            const container = btn.parentElement.querySelector('.horizontal-scroll');
+            container.scrollBy({ left: -350, behavior: 'smooth' });
+        };
+
+        window.scrollRowRight = function (btn) {
+            const container = btn.parentElement.querySelector('.horizontal-scroll');
+            container.scrollBy({ left: 350, behavior: 'smooth' });
+        };
+
+        window.closeModal = closeModal;
+        window.showDetails = showDetails;
+        window.showImage = showImage;
+        window.toggleLike = toggleLike;
+
+        document.getElementById("modalCommentForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const photoId = this.dataset.photoId;
+            const input = this.querySelector('input[name="comment"]');
+            const text = input.value;
+            if (!photoId || !text) return;
+
+            const url = "{% url 'add_comment' 9999 %}".replace('9999', photoId);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ comment: text })
+            })
+                .then(res => {
+                    if (!res.ok && res.redirected) {
+                        throw new Error("redirected");
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        const commentHtml = `<div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
+                        <span class="font-bold text-blue-600">${data.username}:</span>
+                        <span class="">${data.text}</span>
+                    </div>`;
+                        document.getElementById("modalComments").insertAdjacentHTML('beforeend', commentHtml);
+                        document.getElementById(`comments-for-${photoId}`).insertAdjacentHTML('beforeend', commentHtml);
+                        input.value = '';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    alert("Please log in to post a comment, or check your connection.");
+                });
+        });
+    });
+</script>
+
+<div id="photoModal" class="hidden fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+
+    <div class="relative w-[85%] max-w-4xl h-[80vh] bg-white rounded-2xl overflow-hidden shadow-2xl group">
+
+        <!-- SLIDER -->
+        <div id="modalSlider" class="flex h-full transition-transform duration-500" style="width: 200%;">
+
+            <!-- IMAGE PAGE -->
+            <div class="w-full h-full bg-black flex items-center justify-center">
+                <img id="modalImage" class="max-h-full max-w-full object-contain">
+            </div>
+
+            <!-- DETAILS PAGE -->
+            <div class="w-full h-full px-14 pt-16 pb-6 flex flex-col bg-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 id="modalTitle" class="text-3xl font-bold"></h2>
+                        <p id="modalDate" class="text-sm text-gray-500 mt-1"></p>
+                    </div>
+                    <a id="downloadBtn" download
+                        class="px-4 py-2 bg-green-600 hover:bg-green-500 transition text-white rounded-lg text-center font-semibold text-sm">
+                        Download
+                    </a>
+                </div>
+                <p id="modalDescription" class="text-gray-600 mb-6"></p>
+
+                <!-- Likes & Comments -->
+                <div class="flex-1 overflow-hidden flex flex-col border-t border-gray-200 pt-4">
+                    <button id="modalLikeBtn"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm transition flex items-center gap-2 w-fit mb-4 font-semibold">
+                        ❤️ <span id="modalLikeCount"></span>
+                    </button>
+
+                    <h3 class="font-bold text-gray-700 mb-3">Comments</h3>
+                    <div id="modalComments" class="flex-1 overflow-y-auto mb-4 scrollbar-hide">
+                        <!-- Comments will be injected here -->
+                    </div>
+
+                    <form id="modalCommentForm" method="POST" class="flex gap-2 mt-auto pt-2 border-t border-gray-100">
+                        {% csrf_token %}
+                        <input type="text" name="comment" placeholder="Add a comment..." required
+                            class="flex-1 bg-gray-50 text-gray-800 px-4 py-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300">
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-lg text-sm text-white font-bold transition shadow-sm">Post</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CLOSE -->
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl z-10">
+            ✕
+        </button>
+
+        <!-- RIGHT ARROW -->
+        <button onclick="showDetails()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-12 h-12 rounded-full z-10 hidden group-hover:flex items-center justify-center transition-all shadow-lg text-2xl">
+            ❯
+        </button>
+
+        <!-- LEFT ARROW -->
+        <button onclick="showImage()"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-12 h-12 rounded-full z-10 hidden group-hover:flex items-center justify-center transition-all shadow-lg text-2xl">
+            ❮
+        </button>
+
+    </div>
+</div>
+
+<a href="{% url 'profile' %}"
+    class="fixed top-5 right-5 z-50 bg-indigo-600 hover:bg-indigo-700 text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition duration-300"
+    title="Profile">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5.121 17.804A9 9 0 1118.874 6.2a9 9 0 01-13.753 11.604z" />
+    </svg>
+</a>
+
+<a href="{% url 'add_photo' %}" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 
                 text-white w-16 h-16 
                 flex items-center justify-center 
                 rounded-full shadow-xl transition duration-300">
 
-            <svg xmlns="http://www.w3.org/2000/svg" 
-                class="w-8 h-8" 
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M12 4v16m8-8H4"/>
-            </svg>
-    </a>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+</a>
+
+<div id="all-comments-storage" style="display: none;">
+    {% for photo in photos %}
+    <div id="comments-for-{{ photo.id }}">
+        {% for comment in photo.comment_set.all %}
+        <div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
+            <span class="font-bold text-blue-600">{{ comment.user.username }}:</span>
+            <span class="">{{ comment.comment }}</span>
+        </div>
+        {% empty %}
+        <p class="text-xs text-gray-500 italic">No comments yet.</p>
+        {% endfor %}
+    </div>
+    <div id="likes-for-{{ photo.id }}">{{ photo.like_set.count }}</div>
+    {% endfor %}
+</div>
+
 {% endblock %}
