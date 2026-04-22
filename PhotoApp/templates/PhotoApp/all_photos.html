@@ -6,7 +6,13 @@ all Photo Page
 
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
+{% load static %}
+<div class="fixed inset-0 z-[-1]">
+    <img src="{% static 'images/gallery_bg.png' %}" alt="Gallery Background" class="w-full h-full object-cover filter blur-sm opacity-60">
+    <div class="absolute inset-0 bg-[#fcfbf9]/50 backdrop-blur-[2px]"></div>
+</div>
+
+<div class="container mx-auto px-4 py-8 relative z-10">
     <div class="w-full max-w-5xl mx-auto">
 
         {% if photos %}
@@ -34,7 +40,7 @@ all Photo Page
         </div>
         {% endif %}
 
-        <h1 class="text-3xl font-bold mb-4">All Photos</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-4">All Photos</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -87,7 +93,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Wildlife</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Wildlife</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -147,7 +153,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Nature</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Nature</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -207,7 +213,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Portrait</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Portrait</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -267,7 +273,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Architecture</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Architecture</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -327,7 +333,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Street</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Street</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -387,7 +393,7 @@ all Photo Page
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4">Abstract</h1>
+        <h1 class="text-4xl font-serif font-bold text-emerald-900 mb-6 mt-8">Abstract</h1>
         <div class="relative group">
             <button onclick="scrollRowLeft(this)"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full z-10 hidden group-hover:flex items-center justify-center shadow-lg transition-all">❮</button>
@@ -600,7 +606,7 @@ all Photo Page
                 .then(data => {
                     if (data.status === 'success') {
                         const commentHtml = `<div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
-                        <span class="font-bold text-blue-600">${data.username}:</span>
+                        <span class="font-bold text-emerald-700">${data.username}:</span>
                         <span class="">${data.text}</span>
                     </div>`;
                         document.getElementById("modalComments").insertAdjacentHTML('beforeend', commentHtml);
@@ -648,9 +654,9 @@ all Photo Page
                     <form id="modalCommentForm" method="POST" class="flex gap-2 mt-auto pt-2 border-t border-gray-100">
                         {% csrf_token %}
                         <input type="text" name="comment" placeholder="Add a comment..." required
-                            class="flex-1 bg-gray-50 text-gray-800 px-4 py-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300">
+                            class="flex-1 bg-[#fcfbf9] text-stone-800 px-4 py-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-emerald-500 border border-stone-300">
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-lg text-sm text-white font-bold transition shadow-sm">Post</button>
+                            class="bg-emerald-600 hover:bg-emerald-700 px-5 py-2 rounded-lg text-sm text-white font-bold transition shadow-sm">Post</button>
                     </form>
                 </div>
             </div>
@@ -672,7 +678,7 @@ all Photo Page
 </div>
 
 <a href="{% url 'profile' %}"
-    class="fixed top-5 right-5 z-50 bg-indigo-600 hover:bg-indigo-700 text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition duration-300"
+    class="fixed top-[84px] right-6 z-40 bg-emerald-700 hover:bg-emerald-800 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition duration-300 hover:scale-110"
     title="Profile">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -680,10 +686,10 @@ all Photo Page
     </svg>
 </a>
 
-<a href="{% url 'add_photo' %}" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 
+<a href="{% url 'add_photo' %}" class="fixed bottom-6 right-6 bg-emerald-600 hover:bg-emerald-700 
                 text-white w-16 h-16 
                 flex items-center justify-center 
-                rounded-full shadow-xl transition duration-300">
+                rounded-full shadow-xl transition duration-300 hover:scale-110">
 
     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -695,7 +701,7 @@ all Photo Page
     <div id="comments-for-{{ photo.id }}">
         {% for comment in photo.comment_set.all %}
         <div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
-            <span class="font-bold text-blue-600">{{ comment.user.username }}:</span>
+            <span class="font-bold text-emerald-700">{{ comment.user.username }}:</span>
             <span class="">{{ comment.comment }}</span>
         </div>
         {% empty %}
