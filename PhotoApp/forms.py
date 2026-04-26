@@ -17,9 +17,10 @@ class PhotoForm(forms.ModelForm):
     # you can customize the widget if you need extra CSS classes later
     class Meta:
         model = Photo
-        fields = ['title', 'description', 'image']
+        fields = ['title', 'description', 'date', 'image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'w-full px-3 py-2 border rounded-lg'}),
             'description': forms.Textarea(attrs={'class': 'w-full px-3 py-2 border rounded-lg'}),
+            'date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'w-full px-3 py-2 border rounded-lg'}),
             'image': forms.ClearableFileInput(attrs={'class': 'w-full px-3 py-2 border rounded-lg'}),
         }

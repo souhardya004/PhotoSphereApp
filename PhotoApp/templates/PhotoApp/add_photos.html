@@ -156,7 +156,11 @@
 
     /* Style the default Django file input */
     .form-row-file input[type="file"] {
-        display: none !important;
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+        width: 1px;
+        height: 1px;
     }
 </style>
 
@@ -199,9 +203,11 @@
             });
         }
         
-        // Ensure file input element is hidden but keep it clickable
+        // Ensure file input element is hidden visually but focusable for validation
         if(fileInput) {
-            fileInput.style.display = 'none';
+            fileInput.style.opacity = '0';
+            fileInput.style.position = 'absolute';
+            fileInput.style.zIndex = '-1';
         }
     });
 </script>

@@ -110,16 +110,19 @@ def dashboard(request):
 def profile_view(request) :
     user_photos = Photo.objects.filter(user = request.user).order_by('-uploaded_at')
 
-
     liked_photos = Photo.objects.filter(like__user=request.user)
     commented_photos = Photo.objects.filter(comment__user=request.user).distinct()
+    
+    all_unique_photos = set(list(user_photos) + list(liked_photos) + list(commented_photos))
 
     context = {
         'photos' : user_photos,
         'liked_photos': liked_photos,
         'commented_photos': commented_photos,
+        'all_unique_photos': all_unique_photos,
     }
     return render(request,'PhotoApp/profile.html',context)
+
 
 @login_required
 def toggle_like(request,photo_id):

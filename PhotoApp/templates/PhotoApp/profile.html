@@ -14,7 +14,7 @@
     </div>
     
     <div class="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-12">
-        <div class="bg-white/20 backdrop-blur-md border border-white/30 p-8 rounded-3xl shadow-2xl flex items-center justify-between">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-[0_0_40px_-10px_rgba(0,0,0,0.3)] flex items-center justify-between">
             <div>
                 <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-2 tracking-tight">Welcome, {{ request.user.username }}</h1>
                 <p class="text-stone-100 text-lg">
@@ -40,18 +40,18 @@
     <!-- Your Gallery -->
     <div class="flex items-center gap-3 mb-8 border-b border-stone-200 pb-3">
         <svg class="w-8 h-8 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-        <h2 class="text-3xl font-serif font-bold text-emerald-900">Your Gallery</h2>
+        <h2 class="text-3xl font-serif font-bold text-emerald-800 drop-shadow-sm">Your Gallery</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for photo in photos %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/60 hover:shadow-emerald-500/30 hover:-translate-y-3 transition-all duration-500 group">
                 {% if photo.image %}
-                    <div class="overflow-hidden">
-                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-500 group-hover:scale-105">
+                    <div class="overflow-hidden cursor-pointer" onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.date }}', '{{ photo.id }}')">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-700 group-hover:scale-110">
                     </div>
                 {% endif %}
-                <div class="p-6">
+                <div class="p-6 bg-gradient-to-b from-transparent to-stone-50/90 relative z-10">
                     <h3 class="text-xl font-bold text-emerald-900 uppercase tracking-wide mb-2">{{ photo.title }}</h3>
                     <p class="text-stone-600 text-sm mb-4 line-clamp-2">{{ photo.description }}</p>
                     <div class="flex justify-between items-center text-xs text-stone-500 font-medium pb-4 border-b border-stone-100">
@@ -73,7 +73,7 @@
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-20 bg-white border border-stone-200 rounded-3xl shadow-sm">
+            <div class="col-span-full text-center py-20 bg-white/40 backdrop-blur-md border-2 border-dashed border-emerald-200 rounded-3xl shadow-sm">
                 <svg class="w-16 h-16 text-stone-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <p class="text-stone-500 text-xl font-medium">You haven't uploaded any photos yet.</p>
                 <a href="{% url 'add_photo' %}" class="text-emerald-600 font-bold hover:text-emerald-700 hover:underline mt-4 inline-block">
@@ -86,18 +86,18 @@
     <!-- Liked Photos -->
     <div class="flex items-center gap-3 mt-16 mb-8 border-b border-stone-200 pb-3">
         <svg class="w-8 h-8 text-rose-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-        <h2 class="text-3xl font-serif font-bold text-emerald-900">Liked Photos</h2>
+        <h2 class="text-3xl font-serif font-bold text-emerald-800 drop-shadow-sm">Liked Photos</h2>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for photo in liked_photos %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/60 hover:shadow-emerald-500/30 hover:-translate-y-3 transition-all duration-500 group">
                 {% if photo.image %}
-                    <div class="overflow-hidden">
-                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-500 group-hover:scale-105">
+                    <div class="overflow-hidden cursor-pointer" onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.date }}', '{{ photo.id }}')">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-700 group-hover:scale-110">
                     </div>
                 {% endif %}
-                <div class="p-6">
+                <div class="p-6 bg-gradient-to-b from-transparent to-stone-50/90 relative z-10">
                     <h3 class="text-xl font-bold text-emerald-900 uppercase tracking-wide mb-2">{{ photo.title }}</h3>
                     <p class="text-stone-600 text-sm mb-4 line-clamp-2">{{ photo.description }}</p>
                     <div class="flex justify-between items-center text-xs text-stone-500 font-medium pb-4 border-b border-stone-100">
@@ -117,7 +117,7 @@
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-12 bg-stone-50 border border-stone-200 rounded-3xl">
+            <div class="col-span-full text-center py-12 bg-white/40 backdrop-blur-md border-2 border-dashed border-emerald-200 rounded-3xl">
                 <p class="text-stone-500 text-lg font-medium">No liked photos yet.</p>
             </div>
         {% endfor %}
@@ -126,18 +126,18 @@
     <!-- Commented Photos -->
     <div class="flex items-center gap-3 mt-16 mb-8 border-b border-stone-200 pb-3">
         <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-        <h2 class="text-3xl font-serif font-bold text-emerald-900">Commented Photos</h2>
+        <h2 class="text-3xl font-serif font-bold text-emerald-800 drop-shadow-sm">Commented Photos</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for photo in commented_photos %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/60 hover:shadow-emerald-500/30 hover:-translate-y-3 transition-all duration-500 group">
                 {% if photo.image %}
-                    <div class="overflow-hidden">
-                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-500 group-hover:scale-105">
+                    <div class="overflow-hidden cursor-pointer" onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.date }}', '{{ photo.id }}')">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-64 object-cover transform transition duration-700 group-hover:scale-110">
                     </div>
                 {% endif %}
-                <div class="p-6">
+                <div class="p-6 bg-gradient-to-b from-transparent to-stone-50/90 relative z-10">
                     <h3 class="text-xl font-bold text-emerald-900 uppercase tracking-wide mb-2">{{ photo.title }}</h3>
                     <p class="text-stone-600 text-sm mb-4 line-clamp-2">{{ photo.description }}</p>
                     <div class="flex justify-between items-center text-xs text-stone-500 font-medium pb-4 border-b border-stone-100">
@@ -157,7 +157,7 @@
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-12 bg-stone-50 border border-stone-200 rounded-3xl">
+            <div class="col-span-full text-center py-12 bg-white/40 backdrop-blur-md border-2 border-dashed border-emerald-200 rounded-3xl">
                 <p class="text-stone-500 text-lg font-medium">No commented photos yet.</p>
             </div>
         {% endfor %}
@@ -165,7 +165,113 @@
 </div>
 
 {% csrf_token %}
+
+<div id="photoModal" class="hidden fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+    <div class="relative w-[85%] max-w-4xl h-[80vh] bg-white rounded-2xl overflow-hidden shadow-2xl group">
+        <div id="modalSlider" class="flex h-full transition-transform duration-500" style="width: 200%;">
+            <div class="w-full h-full bg-black flex items-center justify-center">
+                <img id="modalImage" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-full h-full px-14 pt-16 pb-6 flex flex-col bg-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 id="modalTitle" class="text-3xl font-bold"></h2>
+                        <p id="modalDate" class="text-sm text-gray-500 mt-1"></p>
+                    </div>
+                    <a id="downloadBtn" download
+                        class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 transition text-white rounded-lg text-center font-semibold text-sm">
+                        Download
+                    </a>
+                </div>
+                <p id="modalDescription" class="text-gray-600 mb-6"></p>
+                <div class="flex-1 overflow-hidden flex flex-col border-t border-gray-200 pt-4">
+                    <button id="modalLikeBtn"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm transition flex items-center gap-2 w-fit mb-4 font-semibold">
+                        ❤️ <span id="modalLikeCount"></span>
+                    </button>
+
+                    <h3 class="font-bold text-gray-700 mb-3">Comments</h3>
+                    <div id="modalComments" class="flex-1 overflow-y-auto mb-4 scrollbar-hide">
+                    </div>
+
+                    <form id="modalCommentForm" method="POST" class="flex gap-2 mt-auto pt-2 border-t border-gray-100">
+                        {% csrf_token %}
+                        <input type="text" name="comment" placeholder="Add a comment..." required
+                            class="flex-1 bg-[#fcfbf9] text-stone-800 px-4 py-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-emerald-500 border border-stone-300">
+                        <button type="submit"
+                            class="bg-emerald-600 hover:bg-emerald-700 px-5 py-2 rounded-lg text-sm text-white font-bold transition shadow-sm">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl z-10">✕</button>
+        <button onclick="showDetails()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-12 h-12 rounded-full z-10 hidden group-hover:flex items-center justify-center transition-all shadow-lg text-2xl">
+            ❯
+        </button>
+        <button onclick="showImage()"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-12 h-12 rounded-full z-10 hidden group-hover:flex items-center justify-center transition-all shadow-lg text-2xl">
+            ❮
+        </button>
+    </div>
+</div>
+
+<div id="all-comments-storage" style="display: none;">
+    {% for photo in all_unique_photos %}
+    <div id="comments-for-{{ photo.id }}">
+        {% for comment in photo.comment_set.all %}
+        <div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
+            <span class="font-bold text-emerald-700">{{ comment.user.username }}:</span>
+            <span class="">{{ comment.comment }}</span>
+        </div>
+        {% empty %}
+        <p class="text-xs text-gray-500 italic">No comments yet.</p>
+        {% endfor %}
+    </div>
+    <div id="likes-for-{{ photo.id }}">{{ photo.like_set.count }}</div>
+    {% endfor %}
+</div>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
 <script>
+function openModal(image, title, description, date, photoId) {
+    document.getElementById("modalImage").src = image;
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalDescription").textContent = description;
+    document.getElementById("modalDate").textContent = date;
+    if (photoId) {
+        document.getElementById("modalLikeCount").textContent = document.getElementById("likes-for-" + photoId).textContent;
+        document.getElementById("modalLikeBtn").setAttribute("onclick", `toggleLike('${photoId}')`);
+        document.getElementById("modalComments").innerHTML = document.getElementById("comments-for-" + photoId).innerHTML;
+        document.getElementById("modalCommentForm").dataset.photoId = photoId;
+    }
+
+    document.getElementById("downloadBtn").href = image;
+    document.getElementById("photoModal").classList.remove("hidden");
+    document.getElementById("modalSlider").style.transform = "translateX(0)";
+}
+
+function closeModal() {
+    document.getElementById("photoModal").classList.add("hidden");
+}
+
+function showDetails() {
+    document.getElementById("modalSlider").style.transform = "translateX(-50%)";
+}
+
+function showImage() {
+    document.getElementById("modalSlider").style.transform = "translateX(0)";
+}
+
 function toggleLike(photoId) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     const url = "{% url 'toggle_like' 9999 %}".replace('9999', photoId);
@@ -179,6 +285,14 @@ function toggleLike(photoId) {
     .then(response => response.json())
     .then(data => {
         if (data.likes !== undefined) {
+            // Update modal and storage
+            if (document.getElementById(`modalLikeCount`)) {
+                document.getElementById(`modalLikeCount`).innerText = data.likes;
+            }
+            if (document.getElementById(`likes-for-${photoId}`)) {
+                document.getElementById(`likes-for-${photoId}`).innerText = data.likes;
+            }
+            // Update cards
             document.querySelectorAll(`[id$="-${photoId}"]`).forEach(el => {
                 if (el.id.startsWith('like-count-')) {
                     el.innerText = data.likes;
@@ -188,5 +302,38 @@ function toggleLike(photoId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+document.getElementById("modalCommentForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const photoId = this.dataset.photoId;
+    const input = this.querySelector('input[name="comment"]');
+    const text = input.value;
+    if (!photoId || !text) return;
+
+    const url = "{% url 'add_comment' 9999 %}".replace('9999', photoId);
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ comment: text })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const commentHtml = `<div class="bg-gray-100 p-2 rounded text-sm text-gray-800 mb-2">
+            <span class="font-bold text-emerald-700">${data.username}:</span>
+            <span class="">${data.text}</span>
+        </div>`;
+            document.getElementById("modalComments").insertAdjacentHTML('beforeend', commentHtml);
+            document.getElementById(`comments-for-${photoId}`).insertAdjacentHTML('beforeend', commentHtml);
+            input.value = '';
+        }
+    })
+    .catch(err => console.error('Error:', err));
+});
 </script>
 {% endblock %}
