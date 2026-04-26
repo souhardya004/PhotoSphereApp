@@ -1,0 +1,38 @@
+<article
+    onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.uploaded_at|date:"M d, Y" }}', '{{ photo.id }}')"
+    class="min-w-[300px] w-[300px] shrink-0 snap-start cursor-pointer overflow-hidden rounded-[28px] border border-white/70 bg-white/85 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.45)] backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:shadow-[0_28px_65px_-28px_rgba(5,150,105,0.45)] group/item"
+>
+    <div class="relative overflow-hidden">
+        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="h-56 w-full object-cover transition duration-700 group-hover/item:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/10 to-transparent"></div>
+        <div class="absolute left-4 top-4 flex items-center gap-2">
+            <span class="rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-stone-700 backdrop-blur">
+                {{ photo.primary_category }}
+            </span>
+        </div>
+    </div>
+    <div class="space-y-4 p-5">
+        <div class="flex items-start justify-between gap-3">
+            <div>
+                <h3 class="text-lg font-semibold text-stone-900">{{ photo.title }}</h3>
+                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-stone-400">{{ photo.uploaded_at|date:"M d, Y" }}</p>
+            </div>
+            <span class="inline-flex items-center gap-1 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-600">
+                &#10084;&#65039; <span id="card-like-count-{{ photo.id }}">{{ photo.likes_total }}</span>
+            </span>
+        </div>
+
+        <p class="line-clamp-2 text-sm leading-6 text-stone-600">{{ photo.description }}</p>
+
+        <div class="border-t border-stone-200/80 pt-4 text-sm">
+            {% if photo.latest_comment %}
+            <p class="line-clamp-1 text-stone-600">
+                <span class="font-semibold text-stone-800">{{ photo.latest_comment.user.username }}:</span>
+                {{ photo.latest_comment.comment }}
+            </p>
+            {% else %}
+            <p class="text-stone-400 italic">No comments yet</p>
+            {% endif %}
+        </div>
+    </div>
+</article>

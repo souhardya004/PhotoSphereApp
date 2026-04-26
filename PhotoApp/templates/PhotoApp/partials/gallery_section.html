@@ -1,0 +1,47 @@
+<section class="rounded-[30px] border border-white/55 bg-white/60 p-5 shadow-[0_24px_70px_-40px_rgba(15,23,42,0.55)] backdrop-blur-xl sm:p-6">
+    <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="text-[11px] uppercase tracking-[0.32em] text-emerald-700/70">Collection</p>
+            <div class="mt-2 flex flex-wrap items-center gap-3">
+                <h2 class="text-3xl font-serif font-bold text-stone-900">{{ section_title }}</h2>
+                <span class="rounded-full bg-stone-900 px-3 py-1 text-xs font-semibold text-white">{{ section_count }} photos</span>
+            </div>
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-600">{{ section_description }}</p>
+        </div>
+
+        {% if section_count %}
+        <div class="hidden rounded-full border border-emerald-100 bg-emerald-50/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700 md:block">
+            Scroll sideways
+        </div>
+        {% endif %}
+    </div>
+
+    {% if section_photos %}
+    <div class="relative group/row">
+        <button
+            onclick="scrollRowLeft(this)"
+            aria-label="Scroll {{ section_title }} left"
+            class="absolute left-0 top-1/2 z-10 hidden h-11 w-11 -translate-x-4 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg text-stone-700 shadow-lg backdrop-blur transition hover:scale-110 hover:bg-white group-hover/row:flex"
+        >
+            &#10094;
+        </button>
+        <button
+            onclick="scrollRowRight(this)"
+            aria-label="Scroll {{ section_title }} right"
+            class="absolute right-0 top-1/2 z-10 hidden h-11 w-11 translate-x-4 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/80 text-lg text-stone-700 shadow-lg backdrop-blur transition hover:scale-110 hover:bg-white group-hover/row:flex"
+        >
+            &#10095;
+        </button>
+
+        <div class="horizontal-scroll flex gap-5 overflow-x-auto px-1 pb-4 scroll-smooth scrollbar-hide snap-x snap-mandatory">
+            {% for photo in section_photos %}
+                {% include "PhotoApp/partials/gallery_card.html" with photo=photo %}
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="rounded-3xl border border-dashed border-stone-300 bg-white/55 px-6 py-10 text-center text-sm text-stone-500">
+        No photos in this collection yet.
+    </div>
+    {% endif %}
+</section>

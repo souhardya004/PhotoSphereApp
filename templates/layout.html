@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {% block Title %}
+        {% block title %}
             PhotoSphere
         {% endblock %}
     </title>
@@ -39,7 +39,12 @@
                         
                         <div class="h-6 w-px bg-stone-300"></div>
                         
-                        <span class="text-sm text-stone-500">Welcome, <span class="text-emerald-800 font-semibold">{{ user.username }}</span></span>
+                        <span class="text-sm text-stone-500">
+                            Welcome,
+                            <a href="{% url 'profile' %}" class="text-emerald-800 font-semibold transition hover:text-emerald-600 hover:underline underline-offset-4">
+                                {{ user.username }}
+                            </a>
+                        </span>
                         
                         <form method="POST" action="{% url 'logout' %}" class="m-0">
                             {% csrf_token %}

@@ -1,17 +1,84 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import Prefetch
 
 from PhotoApp.forms import PhotoCategoryForm, PhotoForm
 from PhotoApp.models import Photo, Photo_category,Like,Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
+
+CATEGORY_SHOWCASE = [
+    ("Wildlife", "Untamed encounters, patient waits, and the quiet drama of animals in motion."),
+    ("Nature", "Landscapes, forests, and weather-filled frames that turn simple light into atmosphere."),
+    ("Portrait", "People-first moments with mood, expression, and detail carrying the scene."),
+    ("Architecture", "Lines, geometry, and structure captured with a more editorial point of view."),
+    ("Street", "Fast observations, candid timing, and the energy of everyday city life."),
+    ("Abstract", "Texture, color, and shape-forward shots that feel more interpretive than literal."),
+]
+
+
+def _base_photo_queryset():
+    return (
+        Photo.objects.select_related("user")
+        .prefetch_related(
+            "like_set",
+            Prefetch(
+                "comment_set",
+                queryset=Comment.objects.select_related("user").order_by("created_at"),
+            ),
+            Prefetch("category", queryset=Photo_category.objects.order_by("id")),
+        )
+        .order_by("-uploaded_at")
+    )
+
+
+def _prepare_photos(queryset):
+    photos = list(queryset)
+
+    for photo in photos:
+        categories = list(photo.category.all())
+        comments = list(photo.comment_set.all())
+        likes = list(photo.like_set.all())
+
+        photo.category_names = [category.category_types for category in categories]
+        photo.primary_category = photo.category_names[0] if photo.category_names else "General"
+        photo.likes_total = len(likes)
+        photo.comments_total = len(comments)
+        photo.latest_comment = comments[-1] if comments else None
+
+    return photos
+
+
 # Create your views here.
 @login_required
 def all_photos(request):
-    photos = Photo.objects.all()
-    photoCategories = Photo_category.objects.all()
-    return render(request, 'PhotoApp/all_photos.html', {'photos': photos, 'photo_categories': photoCategories})
+    photos = _prepare_photos(_base_photo_queryset())
+    featured_photo = next((photo for photo in photos if photo.image), None)
+
+    category_sections = []
+    for category_name, description in CATEGORY_SHOWCASE:
+        section_photos = [
+            photo for photo in photos
+            if photo.image and category_name in photo.category_names
+        ]
+        category_sections.append({
+            "title": category_name,
+            "description": description,
+            "photos": section_photos,
+            "count": len(section_photos),
+        })
+
+    context = {
+        "photos": photos,
+        "featured_photo": featured_photo,
+        "category_sections": category_sections,
+        "total_photos": len(photos),
+        "total_likes": sum(photo.likes_total for photo in photos),
+        "total_comments": sum(photo.comments_total for photo in photos),
+        "active_collections": sum(1 for section in category_sections if section["count"]),
+    }
+    return render(request, "PhotoApp/all_photos.html", context)
 
 
 # views.py
@@ -108,20 +175,36 @@ def dashboard(request):
 
 @login_required
 def profile_view(request) :
-    user_photos = Photo.objects.filter(user = request.user).order_by('-uploaded_at')
+    user_photos = _prepare_photos(_base_photo_queryset().filter(user=request.user))
+    liked_photos = _prepare_photos(_base_photo_queryset().filter(like__user=request.user).distinct())
+    commented_photos = _prepare_photos(_base_photo_queryset().filter(comment__user=request.user).distinct())
 
-    liked_photos = Photo.objects.filter(like__user=request.user)
-    commented_photos = Photo.objects.filter(comment__user=request.user).distinct()
-    
-    all_unique_photos = set(list(user_photos) + list(liked_photos) + list(commented_photos))
+    all_unique_photos_map = {}
+    for photo in user_photos + liked_photos + commented_photos:
+        all_unique_photos_map.setdefault(photo.id, photo)
+    all_unique_photos = list(all_unique_photos_map.values())
+
+    gallery_categories = sorted({
+        category_name
+        for photo in user_photos
+        for category_name in photo.category_names
+    })
+    hero_photo = user_photos[0] if user_photos else (liked_photos[0] if liked_photos else None)
 
     context = {
-        'photos' : user_photos,
-        'liked_photos': liked_photos,
-        'commented_photos': commented_photos,
-        'all_unique_photos': all_unique_photos,
+        "photos": user_photos,
+        "liked_photos": liked_photos,
+        "commented_photos": commented_photos,
+        "all_unique_photos": all_unique_photos,
+        "hero_photo": hero_photo,
+        "uploaded_count": len(user_photos),
+        "liked_count": len(liked_photos),
+        "commented_count": len(commented_photos),
+        "received_likes": sum(photo.likes_total for photo in user_photos),
+        "gallery_categories": gallery_categories,
+        "gallery_categories_count": len(gallery_categories),
     }
-    return render(request,'PhotoApp/profile.html',context)
+    return render(request, "PhotoApp/profile.html", context)
 
 
 @login_required
