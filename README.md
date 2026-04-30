@@ -4,24 +4,30 @@ PhotoSphere is a beautiful, responsive, full-stack photo gallery platform built 
 
 ## ✨ Features
 
-- **User Authentication**: Secure login and registration with visually stunning, glassmorphism-themed auth pages.
+- **User Authentication**: Secure login and registration with visually stunning, nature-inspired, glassmorphism-themed auth pages.
 - **Dynamic Photo Gallery**: 
   - Browse photos beautifully arranged by categories (Nature, Wildlife, Portrait, Architecture, Street, Abstract).
   - Horizontal scrolling rows with interactive sliders.
+- **User Profiles & Dashboards**:
+  - Dedicated user profile pages to view uploaded, liked, and commented photos.
+  - Profile statistics highlighting received likes, gallery categories, and interactions.
+  - Immersive dashboard for navigation.
+- **Photo Management**: 
+  - An intuitive "Add Photo" interface featuring live image previews and category selection.
+  - Easily edit photo details or delete uploaded photos from your profile.
 - **Interactive Modals**: Click on any photo to open a high-resolution cinematic modal that displays the image alongside its details, likes, and live comments.
 - **Social Features**:
   - **Asynchronous Likes**: Users can like photos seamlessly without page reloads.
   - **Live Commenting**: Instantly post and view comments on any photo.
 - **Modern UI/UX**:
-  - Sleek, soft pastel gradient backgrounds with animated floating orbs.
-  - Responsive design that looks great on mobile, tablet, and desktop devices.
-- **Photo Uploads**: An intuitive "Add Photo" interface featuring live image previews before submission.
+  - Sleek, soft pastel gradient backgrounds with animated floating orbs and modern nature-inspired aesthetics.
+  - Refined layout that is responsive and looks great on mobile, tablet, and desktop devices.
 
 ## 🛠️ Technology Stack
 
 - **Backend**: Python, Django
 - **Frontend**: HTML5, Tailwind CSS (via django-tailwind), Vanilla JavaScript
-- **Database**: SQLite (Development)
+- **Database**: SQLite (Development) / PostgreSQL Ready
 - **Deployment Ready**: Configured with `gunicorn` and `requirements.txt` for easy deployment to platforms like Render, Heroku, or Railway.
 
 ## 🚀 Getting Started
@@ -84,7 +90,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 - `PhotoSphere/` - The core Django project settings and WSGI configuration.
 - `PhotoApp/` - The main application containing the models (Photo, Category, Like, Comment), views, and URLs.
-- `templates/` - Contains all HTML templates, including the layout and application-specific pages.
+- `templates/` - Contains all global HTML templates, including the layout and root pages.
 - `theme/` - The django-tailwind application that manages the Tailwind CSS configuration and assets.
 - `media/` - Local storage directory for user-uploaded photos.
 
