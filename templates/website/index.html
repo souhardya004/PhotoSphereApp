@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="relative w-full flex-grow flex items-center justify-center overflow-hidden min-h-[calc(100vh-4rem)]">
+<div class="relative w-full grow flex items-center justify-center overflow-hidden min-h-[calc(100vh-4rem)]">
     <!-- Nature Background Image with Soft Overlay -->
     <div class="absolute inset-0 z-0">
         <img src="{% static 'images/nature_bg.png' %}" alt="Sunflower Field at Sunset" class="w-full h-full object-cover object-center transform scale-105 transition-transform duration-[20s] hover:scale-100">
-        <div class="absolute inset-0 bg-gradient-to-b from-stone-900/30 via-emerald-900/20 to-stone-900/60 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-linear-to-b from-stone-900/30 via-emerald-900/20 to-stone-900/60 mix-blend-multiply"></div>
         <div class="absolute inset-0 bg-amber-500/10 mix-blend-overlay"></div>
     </div>
 
