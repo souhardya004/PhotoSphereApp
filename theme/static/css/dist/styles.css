@@ -1266,6 +1266,9 @@
   .bg-\[radial-gradient\(circle_at_top_left\,_rgba\(16\,185\,129\,0\.18\)\,_transparent_34\%\)\,radial-gradient\(circle_at_top_right\,_rgba\(251\,191\,36\,0\.18\)\,_transparent_30\%\)\,linear-gradient\(180deg\,_\#ecfdf5_0\%\,_\#f6efe4_44\%\,_\#fcfbf9_100\%\)\] {
     background-image: radial-gradient(circle at top left, rgba(16,185,129,0.18), transparent 34%),radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 30%),linear-gradient(180deg, #ecfdf5 0%, #f6efe4 44%, #fcfbf9 100%);
   }
+  .bg-\[radial-gradient\(circle_at_top_left\,rgba\(16\,185\,129\,0\.16\)\,transparent_34\%\)\,radial-gradient\(circle_at_top_right\,rgba\(251\,191\,36\,0\.2\)\,transparent_32\%\)\,linear-gradient\(180deg\,\#effaf5_0\%\,\#f7efe3_42\%\,\#fcfbf9_100\%\)\] {
+    background-image: radial-gradient(circle at top left,rgba(16,185,129,0.16),transparent 34%),radial-gradient(circle at top right,rgba(251,191,36,0.2),transparent 32%),linear-gradient(180deg,#effaf5 0%,#f7efe3 42%,#fcfbf9 100%);
+  }
   .from-stone-900\/30 {
     --tw-gradient-from: color-mix(in srgb, oklch(21.6% 0.006 56.043) 30%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2246,6 +2249,11 @@
   .md\:block {
     @media (width >= 48rem) {
       display: block;
+    }
+  }
+  .md\:aspect-4\/3 {
+    @media (width >= 48rem) {
+      aspect-ratio: 4/3;
     }
   }
   .md\:aspect-\[4\/3\] {

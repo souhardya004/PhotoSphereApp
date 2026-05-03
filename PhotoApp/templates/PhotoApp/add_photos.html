@@ -36,7 +36,7 @@
                     Photo Preview
                 </h3>
                 
-                <div id="preview-container" class="relative w-full aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100/50 border-2 border-dashed border-emerald-400/60 hover:border-emerald-500 transition-colors flex items-center justify-center group cursor-pointer shadow-inner">
+                <div id="preview-container" class="relative w-full aspect-square md:aspect-4/3 rounded-2xl overflow-hidden bg-stone-100/50 border-2 border-dashed border-emerald-400/60 hover:border-emerald-500 transition-colors flex items-center justify-center group cursor-pointer shadow-inner">
                     
                     <!-- Empty State Placeholder -->
                     <div id="preview-placeholder" class="flex flex-col items-center justify-center text-center p-6 transition transform group-hover:scale-105">
@@ -51,7 +51,7 @@
                     <img id="image-preview" src="#" alt="Preview" class="absolute inset-0 w-full h-full object-contain hidden z-10 bg-[#fdfcfaf]/90 backdrop-blur-sm">
                     
                     <!-- Overlay on hover when image exists -->
-                    <div id="preview-overlay" class="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity hidden z-20 flex items-center justify-center backdrop-blur-[1px]">
+                    <div id="preview-overlay" class="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center backdrop-blur-[1px]">
                         <p class="text-emerald-900 font-bold bg-white/90 px-6 py-3 rounded-xl shadow-lg">Change Photo</p>
                     </div>
                 </div>
