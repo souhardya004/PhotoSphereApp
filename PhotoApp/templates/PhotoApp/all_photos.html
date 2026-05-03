@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% load static %}
 
+
 {% block title %}
 Gallery | PhotoSphere
 {% endblock %}
@@ -222,7 +223,7 @@ Gallery | PhotoSphere
         }
 
         function toggleLike(photoId) {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const csrfToken = window.getCsrfToken();
             const url = "{% url 'toggle_like' 9999 %}".replace("9999", photoId);
             fetch(url, {
                 method: "POST",
@@ -291,7 +292,7 @@ Gallery | PhotoSphere
             if (!photoId || !text) return;
 
             const url = "{% url 'add_comment' 9999 %}".replace("9999", photoId);
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const csrfToken = window.getCsrfToken();
 
             fetch(url, {
                 method: "POST",

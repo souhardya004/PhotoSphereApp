@@ -18,6 +18,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends watchman \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
@@ -37,6 +41,13 @@ RUN adduser \
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
+
+RUN PYTAILWIND_DIR=$(python -c "import pathlib, pytailwindcss; print(pathlib.Path(pytailwindcss.__file__).resolve().parent)") \
+    && mkdir -p "$PYTAILWIND_DIR/bin" \
+    && chown -R appuser:appuser "$PYTAILWIND_DIR"
+
+# Fix permissions BEFORE switching user
+RUN mkdir -p /app/staticfiles && chown -R appuser:appuser /app
 
 # Switch to the non-privileged user to run the application.
 USER appuser

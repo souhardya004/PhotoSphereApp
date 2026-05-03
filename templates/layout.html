@@ -1,5 +1,4 @@
-{% load static tailwind_tags %}
-{% load static %}
+{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +9,6 @@
             PhotoSphere
         {% endblock %}
     </title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     {% tailwind_css %}
     <style>
@@ -64,5 +62,32 @@
     {% block content %}
     {% endblock %}
     </main>
+    <script>
+        function getCookie(name) {
+            const cookieValue = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith(`${name}=`));
+            return cookieValue ? decodeURIComponent(cookieValue.split("=").slice(1).join("=")) : "";
+        }
+
+        window.getCsrfToken = function () {
+            return getCookie("csrftoken") || document.querySelector('[name="csrfmiddlewaretoken"]')?.value || "";
+        };
+
+        document.addEventListener("submit", function (event) {
+            if (!(event.target instanceof HTMLFormElement)) {
+                return;
+            }
+
+            const csrfToken = window.getCsrfToken();
+            if (!csrfToken) {
+                return;
+            }
+
+            event.target.querySelectorAll('input[name="csrfmiddlewaretoken"]').forEach((input) => {
+                input.value = csrfToken;
+            });
+        }, true);
+    </script>
 </body>
 </html>

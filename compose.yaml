@@ -7,7 +7,6 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
-version: '3.9'
 services:
   db:
     image: postgres:15
@@ -20,8 +19,14 @@ services:
       context: .
     ports:
       - 8000:8000
+    volumes:
+      - .:/app
     env_file:
       - .env
+    command: >
+      sh -c "python manage.py migrate &&
+      (python manage.py tailwind start &) &&
+      exec uvicorn PhotoSphere.asgi:application --host 0.0.0.0 --port 8000 --reload"
     depends_on:
       - db
 
@@ -57,4 +62,3 @@ services:
 # secrets:
 #   db-password:
 #     file: db/password.txt
-
