@@ -46,14 +46,14 @@ RUN PYTAILWIND_DIR=$(python -c "import pathlib, pytailwindcss; print(pathlib.Pat
     && mkdir -p "$PYTAILWIND_DIR/bin" \
     && chown -R appuser:appuser "$PYTAILWIND_DIR"
 
+# Copy the source code into the container.
+COPY . .
+
 # Fix permissions BEFORE switching user
-RUN mkdir -p /app/staticfiles && chown -R appuser:appuser /app
+RUN mkdir -p /app/staticfiles /app/media && chown -R appuser:appuser /app
 
 # Switch to the non-privileged user to run the application.
 USER appuser
-
-# Copy the source code into the container.
-COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 8000
