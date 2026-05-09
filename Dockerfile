@@ -59,4 +59,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application.
-CMD ["sh", "-c", "python manage.py migrate && uvicorn PhotoSphere.asgi:application --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && python manage.py migrate && uvicorn PhotoSphere.asgi:application --host 0.0.0.0 --port 8000"]
