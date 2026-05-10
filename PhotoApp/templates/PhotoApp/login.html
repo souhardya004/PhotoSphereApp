@@ -7,18 +7,18 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex-1 w-full flex items-center justify-center relative overflow-hidden -mt-16 pt-16">
+    <div class="min-h-[calc(100vh-64px)] flex items-center justify-center relative overflow-hidden -mt-16 pt-16">
         
         <!-- Nature Background with Soft Overlay -->
         <div class="absolute inset-0 z-0">
             <img src="{% static 'images/new_login_bg.png' %}" alt="Tranquil Lake Background" class="w-full h-full object-cover object-center filter blur-sm opacity-80 transform scale-105 transition-transform duration-[20s] hover:scale-100">
             <div class="absolute inset-0 bg-stone-900/30 mix-blend-multiply"></div>
-            <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+            <div class="absolute inset-0 bg-[#fdfcfaf]/40 backdrop-blur-[2px]"></div>
         </div>
 
         <div class="relative z-10 w-full max-w-md m-4">
             <!-- Light Glass Card -->
-            <div class="bg-white/70 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-xl">
+            <div class="bg-white/70 backdrop-blur-xl border border-white/50 p-8 sm:p-10 rounded-3xl shadow-xl">
                 
                 <div class="text-center mb-8">
                     <h2 class="text-4xl font-serif font-bold text-emerald-900 mb-2 tracking-tight">Welcome Back</h2>
