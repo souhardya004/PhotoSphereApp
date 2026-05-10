@@ -1,5 +1,6 @@
+{% with "M d, Y" as date_fmt %}
 <article
-    onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.uploaded_at|date:"M d, Y" }}', '{{ photo.id }}')"
+    onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.uploaded_at|date:date_fmt }}', '{{ photo.id }}')"
     class="min-w-[300px] w-[300px] shrink-0 snap-start cursor-pointer overflow-hidden rounded-[28px] border border-white/70 bg-white/85 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.45)] backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:shadow-[0_28px_65px_-28px_rgba(5,150,105,0.45)] group/item"
 >
     <div class="relative overflow-hidden">
@@ -36,3 +37,4 @@
         </div>
     </div>
 </article>
+{% endwith %}

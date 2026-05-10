@@ -205,7 +205,11 @@ Gallery | PhotoSphere
                 modalCommentForm.dataset.photoId = photoId;
             }
 
-            document.getElementById("downloadBtn").href = image;
+            let downloadUrl = image;
+            if (downloadUrl.includes("res.cloudinary.com") && downloadUrl.includes("/upload/")) {
+                downloadUrl = downloadUrl.replace("/upload/", "/upload/fl_attachment/");
+            }
+            document.getElementById("downloadBtn").href = downloadUrl;
             photoModal.classList.remove("hidden");
             document.getElementById("modalSlider").style.transform = "translateX(0)";
         }

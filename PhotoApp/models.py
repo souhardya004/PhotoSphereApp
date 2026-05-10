@@ -11,6 +11,15 @@ class Photo(models.Model):
     image = models.ImageField(upload_to='photos/')
     uploaded_at = models.DateTimeField(default=timezone.now)
 
+    @property
+    def download_url(self):
+        if self.image:
+            url = self.image.url
+            if "res.cloudinary.com" in url and "/upload/" in url:
+                return url.replace("/upload/", "/upload/fl_attachment/")
+            return url
+        return ""
+
     def __str__(self):
         return self.title
 
