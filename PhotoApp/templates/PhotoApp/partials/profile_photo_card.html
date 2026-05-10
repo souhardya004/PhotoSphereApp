@@ -2,7 +2,7 @@
 <article
     class="group overflow-hidden rounded-[28px] border border-white/70 bg-white/88 shadow-[0_20px_55px_-30px_rgba(15,23,42,0.45)] backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:shadow-[0_28px_70px_-34px_rgba(5,150,105,0.38)]">
     <div class="relative overflow-hidden cursor-pointer"
-        onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.uploaded_at|date:date_fmt }}', '{{ photo.id }}')">
+        onclick="openModal('{{ photo.image.url }}', '{{ photo.title|escapejs }}', '{{ photo.description|escapejs }}', '{{ photo.uploaded_at|date:date_fmt }}', '{{ photo.id }}', '{{ photo.user.username|escapejs }}')">
         <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
             class="h-64 w-full object-cover transition duration-700 group-hover:scale-110">
         <div class="absolute inset-0 bg-gradient-to-t from-stone-950/75 via-stone-950/10 to-transparent"></div>
@@ -34,7 +34,7 @@
         <div class="flex items-start justify-between gap-4">
             <div>
                 <h3 class="text-xl font-bold text-stone-900">{{ photo.title }}</h3>
-                <p class="mt-1 text-sm text-stone-500">{{ photo.uploaded_at|date:"M d, Y" }}</p>
+                <p class="mt-1 text-sm text-stone-500">By <span class="font-medium text-stone-700">{{ photo.user.username }}</span> &middot; {{ photo.uploaded_at|date:date_fmt }}</p>
             </div>
             <span class="rounded-full bg-stone-900/5 px-3 py-1 text-xs font-semibold text-stone-600">
                 {{ photo.comments_total }} comments

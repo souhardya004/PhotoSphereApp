@@ -259,10 +259,10 @@
         <button onclick="closeModal()" aria-label="Close modal" class="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/35 text-2xl text-white backdrop-blur transition hover:bg-black/55">
             &#10005;
         </button>
-        <button onclick="showDetails()" aria-label="Show photo details" class="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-xl text-white shadow-lg backdrop-blur transition hover:bg-black/55 group-hover:flex">
+        <button onclick="showDetails()" aria-label="Show photo details" class="absolute right-4 top-1/2 z-10 flex md:hidden md:group-hover:flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-xl text-white shadow-lg backdrop-blur transition hover:bg-black/55">
             &#10095;
         </button>
-        <button onclick="showImage()" aria-label="Show photo image" class="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-xl text-white shadow-lg backdrop-blur transition hover:bg-black/55 group-hover:flex">
+        <button onclick="showImage()" aria-label="Show photo image" class="absolute left-4 top-1/2 z-10 flex md:hidden md:group-hover:flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-xl text-white shadow-lg backdrop-blur transition hover:bg-black/55">
             &#10094;
         </button>
     </div>
@@ -299,11 +299,16 @@
     const photoModal = document.getElementById("photoModal");
     const modalCommentForm = document.getElementById("modalCommentForm");
 
-    function openModal(image, title, description, date, photoId) {
+    function openModal(image, title, description, date, photoId, username) {
         document.getElementById("modalImage").src = image;
         document.getElementById("modalTitle").textContent = title;
         document.getElementById("modalDescription").textContent = description;
-        document.getElementById("modalDate").textContent = date;
+        
+        if (username) {
+            document.getElementById("modalDate").innerHTML = `By <span class="font-medium text-stone-700">${username}</span> &middot; ${date}`;
+        } else {
+            document.getElementById("modalDate").textContent = date;
+        }
         if (photoId) {
             document.getElementById("modalLikeCount").textContent = document.getElementById("likes-for-" + photoId).textContent;
             document.getElementById("modalLikeBtn").setAttribute("onclick", `toggleLike('${photoId}')`);
